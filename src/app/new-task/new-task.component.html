@@ -1,0 +1,14 @@
+<div sui-segment>
+    <h2 sui-header>Create New Task</h2>
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" sui-form>
+        <div suiFormField>
+            <label>Task Title</label>
+            <input type="text" formControlName="title" placeholder="Enter task title">
+        </div>
+        <div suiFormField>
+            <label>Task Description</label>
+            <textarea formControlName="description" placeholder="Enter task description"></textarea>
+        </div>
+        <button sui-button suiEmphasis="secondary" type="submit">Submit</button>
+    </form>
+</div>

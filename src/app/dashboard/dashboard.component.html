@@ -1,0 +1,47 @@
+<!-- <button sui-button>
+  Add Task
+</button> -->
+<div class="ui three column grid" cdkDropListGroup>
+  <div class="column tasks-column">
+    <div class="ui segment">
+      <h2>New Task</h2>
+      <div class="ui relaxed divided list tasks-list" cdkDropList [cdkDropListData]="newTasks"
+        (cdkDropListDropped)="onTaskDropped($event, 'new')">
+        <div class="item" *ngFor="let task of newTasks" cdkDrag>
+          <div class="content">
+            <div class="header">{{ task.title }}</div>
+            <div class="description">{{ task.description }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="ui segment">
+      <h2>In Progress</h2>
+      <div class="ui relaxed divided list tasks-list" cdkDropList [cdkDropListData]="inProgressTasks"
+        (cdkDropListDropped)="onTaskDropped($event, 'inProgress')">
+        <div class="item" *ngFor="let task of inProgressTasks" cdkDrag cdkDragData="task">
+          <div class="content">
+            <div class="header">{{ task.title }}</div>
+            <div class="description">{{ task.description }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="ui segment">
+      <h2>Done</h2>
+      <div class="ui relaxed divided list tasks-list" cdkDropList [cdkDropListData]="doneTasks" (cdkDropListDropped)="
+        onTaskDropped($event, 'done' )">
+        <div class="item" *ngFor="let task of doneTasks" cdkDrag cdkDragData="task">
+          <div class="content">
+            <div class="header">{{ task.title }}</div>
+            <div class="description">{{ task.description }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

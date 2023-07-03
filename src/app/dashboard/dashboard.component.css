@@ -1,0 +1,12 @@
+.ui.cards {
+    margin-top: 20px;
+}
+
+.ui.cards .card {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.tasks-list {
+    min-height: 50px;
+}
