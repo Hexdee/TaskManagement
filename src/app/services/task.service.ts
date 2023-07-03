@@ -1,24 +1,32 @@
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs';
-import { Task } from '../task.model';
+import { Task } from '../task';
 
 
+interface IAllTasks {
+  new: Task[];
+  inProgress: Task[];
+  done: Task[];
+}
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class TaskService {
-  private tasks: Task[] = [];//{ id: "id1", title: "Title 0", description: "Description 1", status: "inProgress" }, { id: "id2", title: "Title 1", description: "Description 1", status: "inProgress" }, { id: "id3", title: "Title 2", description: "Description 1", status: "inProgress" },
-  // { id: "id4", title: "Title 5", description: "Description 1", status: "done" }, { id: "id5", title: "Title 4", description: "Description 1", status: "done" }, { id: "id6", title: "Title 3", description: "Description 1", status: "done" }];
-  private tasksSubject: BehaviorSubject<Task[]>;
+  private tasks: IAllTasks;
+  private tasksSubject: BehaviorSubject<IAllTasks>;
 
   constructor() {
     const savedTasks = localStorage.getItem("tasks");
     if (savedTasks) {
       this.tasks = JSON.parse(savedTasks);
+      console.log("tasks", this.tasks);
+    } else {
+      this.tasks = { new: [], inProgress: [], done: [] };
     }
-    this.tasksSubject = new BehaviorSubject<Task[]>(this.tasks);
+    this.tasksSubject = new BehaviorSubject<IAllTasks>(this.tasks);
   }
 
   saveTasks() {
@@ -30,23 +38,22 @@ export class TaskService {
   }
 
   addTask(title: string, description: string) {
-    const task: Task = {
-      id: this.tasks.length,
-      title,
-      description,
-      status: "new"
-    }
-    this.tasks.push(task);
+    const task = new Task(this.tasks.new.length, title, description);
+    this.tasks.new.push(task);
     this.tasksSubject.next(this.tasks);
     this.saveTasks();
   }
 
-  updateTask(task: Task) {
-    console.log(task);
-    this.tasks[task.id] = task;
-    this.tasksSubject.next(this.tasks);
+  editTask(task: Task, status: "new" | "inProgress" | "done") {
+    const index = this.tasks[status].findIndex((t) => t.id == task.id);
+    this.tasks[status][index].title = task.title;
+    this.tasks[status][index].description = task.description;
+    this.saveTasks();
+  }
+
+  deleteTask(task: Task, status: "new" | "inProgress" | "done") {
+    const index = this.tasks[status].findIndex((t) => t.id == task.id);
+    this.tasks[status].splice(index, 1);
     this.saveTasks();
   }
 }
-
-

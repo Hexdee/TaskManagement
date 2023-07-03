@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Task } from '../task.model';
+import { Task } from '../task';
 import { TaskService } from '../services/task.service';
 import { moveItemInArray, transferArrayItem, CdkDragDrop } from '@angular/cdk/drag-drop';
 
@@ -20,30 +20,24 @@ export class DashboardComponent {
 
   getTasks() {
     this.taskService.getTasks().subscribe((tasks) => {
-      this.newTasks = [];
-      this.inProgressTasks = [];
-      this.doneTasks = [];
-      tasks.map(task => {
-        if (task.status == "done") {
-          this.doneTasks.push(task);
-        } else if (task.status == "inProgress") {
-          this.inProgressTasks.push(task);
-        } else {
-          this.newTasks.push(task);
-        }
-      })
+      this.newTasks = tasks.new;
+      this.inProgressTasks = tasks.inProgress;
+      this.doneTasks = tasks.done;
     });
   }
 
-  onTaskDropped(event: CdkDragDrop<Task[]>, targetStatus: string) {
+  deleteTask(task: Task, status: "new" | "inProgress" | "done") {
+    this.taskService.deleteTask(task, status);
+  }
+
+  onTaskDropped(event: CdkDragDrop<Task[]>) {
+    console.log({ event });
     if (event.previousContainer === event.container) {
+      console.log(event);
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      console.log(event)
       transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
-      const movedTask = event.container.data[event.currentIndex];
-      movedTask.status = targetStatus;
-      this.taskService.updateTask(movedTask);
     }
+    this.taskService.saveTasks();
   }
 }

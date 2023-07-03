@@ -5,18 +5,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NewTaskComponent } from './new-task/new-task.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { TaskCardComponent } from './task-card/task-card.component';
 
 import { NgxSemanticModule } from "ngx-semantic";
 import { ReactiveFormsModule } from "@angular/forms";
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
     AppComponent,
     NewTaskComponent,
     DashboardComponent,
-    TaskCardComponent
   ],
   imports: [
     BrowserModule,
@@ -24,6 +24,8 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
     NgxSemanticModule,
     ReactiveFormsModule,
     DragDropModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]
